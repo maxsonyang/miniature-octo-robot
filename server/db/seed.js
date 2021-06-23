@@ -118,7 +118,6 @@ async function seed() {
 
 async function runSeed() {
   console.log("seeding...");
-  console.log(process.env.SESSION_SECRET);
   try {
     await seed();
   } catch (err) {
