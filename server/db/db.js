@@ -4,7 +4,7 @@ require('dotenv').config();
 const db = new Sequelize(
   'messenger',
   'postgres',
-  'postgres',
+  process.env.DATABASE_PASSWORD,
   {
     host: 'localhost',
     dialect: 'postgres',
