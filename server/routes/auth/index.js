@@ -27,12 +27,10 @@ router.post("/register", async (req, res, next) => {
       { expiresIn: 86400 }
     );
     
-    // add token as cookie and set it to be httpOnly
     res.cookie('token', token, { httpOnly: true });
 
     res.json({
-      ...user.dataValues,
-      token,
+      ...user.dataValues
     });
   } catch (error) {
     if (error.name === "SequelizeUniqueConstraintError") {
@@ -69,12 +67,10 @@ router.post("/login", async (req, res, next) => {
         { expiresIn: 86400 }
       );
 
-      // add token as cookie and set it to be httpOnly
       res.cookie('token', token, { httpOnly: true });
 
       res.json({
-        ...user.dataValues,
-        token,
+        ...user.dataValues
       });
     }
   } catch (error) {
