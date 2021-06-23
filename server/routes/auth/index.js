@@ -26,6 +26,10 @@ router.post("/register", async (req, res, next) => {
       process.env.SESSION_SECRET,
       { expiresIn: 86400 }
     );
+    
+    // add token as cookie and set it to be httpOnly
+    res.cookie('token', token, { httpOnly: true });
+
     res.json({
       ...user.dataValues,
       token,
@@ -64,6 +68,10 @@ router.post("/login", async (req, res, next) => {
         process.env.SESSION_SECRET,
         { expiresIn: 86400 }
       );
+
+      // add token as cookie and set it to be httpOnly
+      res.cookie('token', token, { httpOnly: true });
+
       res.json({
         ...user.dataValues,
         token,
@@ -75,6 +83,7 @@ router.post("/login", async (req, res, next) => {
 });
 
 router.delete("/logout", (req, res, next) => {
+  res.cookie('token', "", { httpOnly: true });
   res.sendStatus(204);
 });
 
