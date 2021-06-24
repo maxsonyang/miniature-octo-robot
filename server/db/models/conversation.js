@@ -22,4 +22,13 @@ Conversation.findConversation = async function (user1Id, user2Id) {
   return conversation;
 };
 
+Conversation.findByID = async function(id) {
+  const conversation = await Conversation.findOne({
+    where: {
+      id
+    }
+  })
+  return conversation;
+}
+
 module.exports = Conversation;
