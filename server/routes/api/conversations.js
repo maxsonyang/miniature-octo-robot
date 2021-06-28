@@ -54,16 +54,18 @@ router.get("/", async (req, res, next) => {
     for (let i = 0; i < conversations.length; i++) {
       const convo = conversations[i];
       const convoJSON = convo.toJSON();
-
-      console.log(convo);
+      var currentUserLastRead;
       
       // set a property "otherUser" so that frontend will have easier access
+      // also get the last read ID of the current user
       if (convoJSON.user1) {
         convoJSON.otherUser = convoJSON.user1;
         delete convoJSON.user1;
+        currentUserLastRead = convoJSON.user2lastRead;
       } else if (convoJSON.user2) {
         convoJSON.otherUser = convoJSON.user2;
         delete convoJSON.user2;
+        currentUserLastRead = convoJSON.user1lastRead;
       }
 
       // set property for online status of the other user
@@ -77,6 +79,19 @@ router.get("/", async (req, res, next) => {
       const messages = convoJSON.messages;
       // Feels hacky, but less costly than reversing all the messages.
       convoJSON.latestMessageText = messages[messages.length - 1].text;
+      // Figure out how many messages are unread.
+      if (currentUserLastRead) {
+        for (let msg_i = messages.length - 1;  msg_i >= 0; msg_i--) {
+          const message = messages[msg_i];
+          if (message.id === currentUserLastRead) {
+            convoJSON.unreadMessages = messages.length - msg_i - 1;
+            break;
+          }
+        }
+      } else {
+        convoJSON.unreadMessages = messages.length;
+      }
+      console.log(convoJSON.unreadMessages);
       conversations[i] = convoJSON;
     }
 
