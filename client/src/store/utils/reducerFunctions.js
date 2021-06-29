@@ -2,12 +2,15 @@ import axios from "axios";
 
 export const addMessageToStore = (state, payload) => {
   const { message, sender } = payload;
+  console.log(payload);
+  let activeConversation = payload.activeConversation;
   // if sender isn't null, that means the message needs to be put in a brand new convo
   if (sender !== null) {
     const newConvo = {
       id: message.conversationId,
       otherUser: sender,
       messages: [message],
+      unreadMessages: 1,
     };
     newConvo.latestMessageText = message.text;
     return [newConvo, ...state];
@@ -18,7 +21,10 @@ export const addMessageToStore = (state, payload) => {
       const convoCopy = { ...convo };
       convoCopy.messages.push(message);
       convoCopy.latestMessageText = message.text;
-
+      if (convo.otherUser.username !== activeConversation) {
+        convoCopy.unreadMessages = convoCopy.unreadMessages + 1;
+      }
+      console.log(convoCopy.unreadMessages);
       return convoCopy;
     } else {
       return convo;
