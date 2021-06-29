@@ -20,7 +20,6 @@ socket.on("connect", () => {
   });
   socket.on("new-message", (data) => {
     const { activeConversation } = store.getState();
-    console.log(activeConversation);
     store.dispatch(setNewMessage(data.message, data.sender, activeConversation));
   });
 });
