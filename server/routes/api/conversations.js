@@ -141,6 +141,7 @@ router.post("/read", async (req, res, next) => {
     for (let i = 0; i < conversations.length; i++) {
       const convo = conversations[i];
       const messages = convo.messages;
+
       if (convo.user1 && otherId == convo.user1.id) {
         convo.user2lastRead = messages[messages.length - 1].id;
         await convo.save();

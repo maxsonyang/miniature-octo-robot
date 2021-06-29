@@ -37,6 +37,14 @@ router.post("/", async (req, res, next) => {
       conversationId: conversation.id,
     });
 
+    if (conversation.user1Id === senderId) {
+      conversation.user1lastRead = message.id;
+    } else {
+      conversation.user2lastRead = message.id;
+    }
+    
+    await conversation.save();
+
     res.json({ message, sender });
   } catch (error) {
     next(error);
