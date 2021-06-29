@@ -10,12 +10,22 @@ import {
   TextField,
   FormHelperText,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import { register } from "./store/utils/thunkCreators";
+
+const useStyles = makeStyles(() => ({
+  
+  button: {
+    margin: "auto",
+  }
+
+}))
 
 const Login = (props) => {
   const history = useHistory();
   const { user, register } = props;
   const [formErrorMessage, setFormErrorMessage] = useState({});
+  const classes = useStyles();
 
   const handleRegister = async (event) => {
     event.preventDefault();
@@ -97,7 +107,12 @@ const Login = (props) => {
                 </FormHelperText>
               </FormControl>
             </Grid>
-            <Button type="submit" variant="contained" size="large">
+            <Button
+              className={classes.button}
+              type="submit"
+              variant="contained"
+              size="large"
+            >
               Create
             </Button>
           </Grid>
