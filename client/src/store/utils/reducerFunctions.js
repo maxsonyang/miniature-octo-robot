@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export const addMessageToStore = (state, payload) => {
   const { message, sender } = payload;
   // if sender isn't null, that means the message needs to be put in a brand new convo
@@ -82,9 +84,16 @@ export const addNewConvoToStore = (state, recipientId, message) => {
   });
 };
 
-export const markMessagesAsRead = (state, user) => {
+export function markMessagesAsRead(state, user) {
   return state.map((convo) => {
     if (convo.otherUser.username === user) {
+      try {
+        axios.post("/api/conversations/read", {
+          convo
+        })
+      } catch (error) {
+        console.error(error);
+      }
       const newConvo = { ...convo };
       newConvo.unreadMessages = 0;
       return newConvo;

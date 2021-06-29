@@ -91,7 +91,6 @@ router.get("/", async (req, res, next) => {
       } else {
         convoJSON.unreadMessages = messages.length;
       }
-      console.log(convoJSON.unreadMessages);
       conversations[i] = convoJSON;
     }
 
@@ -100,5 +99,65 @@ router.get("/", async (req, res, next) => {
     next(error);
   }
 });
+
+router.post("/read", async (req, res, next) => {
+  
+  try {
+    const convoId = req.body.convo.id;
+    const otherId = req.body.convo.otherUser.id;
+    const conversations = await Conversation.findAll({
+      where: {
+        id : {
+          [Op.eq]: convoId,
+        }
+      },
+      attributes: ["id", "user1lastRead", "user2lastRead"],
+      include: [
+        { model: Message },
+        {
+          model: User,
+          as: "user1",
+          where: {
+            id: {
+              [Op.eq]: otherId,
+            },
+          },
+          attributes: ["id", "username"],
+          required: false,
+        },
+        {
+          model: User,
+          as: "user2",
+          where: {
+            id: {
+              [Op.eq]: otherId,
+            },
+          },
+          attributes: ["id", "username"],
+          required: false,
+        },
+      ],
+    });
+    for (let i = 0; i < conversations.length; i++) {
+      const convo = conversations[i];
+      const messages = convo.messages;
+      if (convo.user1 && otherId == convo.user1.id) {
+        convo.user2lastRead = messages[messages.length - 1].id;
+        await convo.save();
+        res.status(200);
+        return;
+      } else if (convo.user2 && otherId == convo.user2.id) {
+        convo.user1lastRead = messages[messages.length - 1].id;
+        await convo.save();
+        res.status(200);
+        return;
+      }
+    }
+    res.status(404);
+  }
+  catch (error) {
+    next(error);
+  }
+})
 
 module.exports = router;
