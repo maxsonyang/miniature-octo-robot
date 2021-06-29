@@ -26,8 +26,11 @@ router.post("/register", async (req, res, next) => {
       process.env.SESSION_SECRET,
       { expiresIn: 86400 }
     );
-    
-    res.cookie('token', token, { httpOnly: true });
+    const expires = new Date(new Date().getTime() + 60 * 60 * 24 * 1000);
+    res.cookie('token', token, { 
+      httpOnly: true,
+      expires,
+    });
 
     res.json({
       ...user.dataValues
