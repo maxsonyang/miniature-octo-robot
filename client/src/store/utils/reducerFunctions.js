@@ -81,3 +81,15 @@ export const addNewConvoToStore = (state, recipientId, message) => {
     }
   });
 };
+
+export const markMessagesAsRead = (state, user) => {
+  return state.map((convo) => {
+    if (convo.otherUser.username === user) {
+      const newConvo = { ...convo };
+      newConvo.unreadMessages = 0;
+      return newConvo;
+    } else {
+      return convo;
+    }
+  });
+}

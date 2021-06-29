@@ -19,13 +19,16 @@ const useStyles = makeStyles((theme) => ({
 
 const UnreadMessages = (props) => {
   const classes = useStyles();
-  return (
-    <Box className={classes.root}>
-      <Typography className={classes.count}>
-        {props.unread}
-      </Typography>
-    </Box>
-  )
+  if (props.unread > 0) {
+    return (
+      <Box className={classes.root}>
+        <Typography className={classes.count}>
+          {props.unread}
+        </Typography>
+      </Box>
+    )
+  }
+  return null;
 }
 
 export default UnreadMessages;
