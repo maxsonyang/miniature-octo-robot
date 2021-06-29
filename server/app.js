@@ -22,7 +22,7 @@ app.use(express.static(join(__dirname, "public")));
 app.use(cookieparser(process.env.SESSION_SECRET));
 
 app.use(function (req, res, next) {
-  const token = req.cookies.token; // Get the cookie instead.
+  const token = req.cookies.token;
   if (token) {
     jwt.verify(token, process.env.SESSION_SECRET, (err, decoded) => {
       if (err) {
