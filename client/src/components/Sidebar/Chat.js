@@ -42,7 +42,7 @@ class Chat extends Component {
           online={otherUser.online}
           sidebar={true}
         />
-        <ChatContent conversation={this.props.conversation} />
+        <ChatContent conversation={this.props.conversation} unread={unreadMessages} />
         <UnreadMessages unread={unreadMessages} />
       </Box>
     );
