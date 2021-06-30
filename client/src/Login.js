@@ -11,18 +11,9 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { login } from "./store/utils/thunkCreators";
-import BannerBG from "./assets/bg-img.png";
-import BubbleSVG from "./assets/bubble.svg";
+import BannerContainer from "./components/Landing/Banner";
 
 const useStyles = makeStyles((theme) => ({
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    [theme.breakpoints.up('md')]: {
-      flexDirection: "row",
-    }
-  },
   buttonContainer: {
     display: "flex",
     justifyContent: "space-around",
@@ -37,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     "&:focus": {
       boxShadow: "none",
     },
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('landscape')]: {
       fontSize: 16,
       fontWeight: 700,
     }
@@ -48,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "0 2px 20px 0 rgba(88,133,196,0.10)",
     maxWidth: "fit-content",
     padding: "10px 50px",
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('landscape')]: {
       marginLeft: 30,
       height: 60
     }
@@ -57,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
     ...theme.typography,
     fontWeight: 600,
     fontSize: 24,
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('landscape')]: {
       fontSize: 32,
     }
   },
@@ -68,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     height: 50,
     lineHeight: "50px",
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('landscape')]: {
       fontSize: 14
     }
   },
@@ -77,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     marginBottom: 40,
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('landscape')]: {
       flexDirection: "row",
       padding: "20px 40px",
       justifyContent: "flex-end",
@@ -85,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
   },
   login: {
     margin: "auto 0",
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('landscape')]: {
       margin: "10vh 0",
       width: "60%",
     }
@@ -119,43 +110,11 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     height: "92vh",
     width: "80%",
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('landscape')]: {
       flexDirection: "column",
       width: "65%",
       height: "100vh",
       margin: "auto",
-    }
-  },
-  banner: {
-    backgroundImage: `linear-gradient(#3A8DFF, #86B9FF), url(${BannerBG})`,
-    width: "100%",
-    height: "8vh",
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    [theme.breakpoints.up('md')]: {
-      flexDirection: "column",
-      justifyContent:"center",
-      width: "40%",
-      height: "100vh",
-    }
-  },
-  chatBubble: {
-    width: 32,
-    height: 32,
-    display: "block",
-    margin: "0 15px",
-    [theme.breakpoints.up('md')]: {
-      width: 64,
-      height: 64,
-    }
-  },
-  bannerText: {
-    color: "#FFFFFF",
-    [theme.breakpoints.up('md')]: {
-      fontSize: 28,
-      width: "50%",
-      textAlign: "center",
     }
   },
 }));
@@ -177,80 +136,68 @@ const Login = (props) => {
   }
 
   return (
-    <Box className={classes.container} container justify="center">
-      <Box className={classes.banner}>
-        <img className={classes.chatBubble} src={BubbleSVG} alt="logo" />
-        <p className={classes.bannerText}>
-          Converse with anyone with any language
-        </p>
-      </Box>
-      <Box className={classes.loginBox}>
-        <Grid className={classes.signUpContainer} container item>
-          <Typography className={classes.signUpHeader}>
-            Don't have an account?
-          </Typography>
-          <Button
-            className={classes.signUpButton}
-            onClick={() => history.push("/register")}
-          >
-            Create Account
-          </Button>
-        </Grid>
-        <form className={classes.login} onSubmit={handleLogin}>
+    <BannerContainer>
+      <Grid className={classes.signUpContainer} container item>
+        <Typography className={classes.signUpHeader}>
+          Don't have an account?
+        </Typography>
+        <Button
+          className={classes.signUpButton}
+          onClick={() => history.push("/register")}
+        >
+          Create Account
+        </Button>
+      </Grid>
+      <form className={classes.login} onSubmit={handleLogin}>
+        <Grid>
+          <h1 className={classes.welcomeHeader}>Welcome Back!</h1>
           <Grid>
-            <h1 className={classes.welcomeHeader}>Welcome Back!</h1>
-            <Grid>
-              <FormControl
-                className={classes.formControl}
-                margin="normal"
-                required
-              >
-                <TextField
-                  aria-label="username"
-                  label="E-mail Address"
-                  name="username"
-                  type="text"
-                  InputProps={{
-                    classes: { underline: classes.underline },
-                  }}
-                />
-              </FormControl>
-            </Grid>
             <FormControl
               className={classes.formControl}
               margin="normal"
               required
             >
               <TextField
-                label="password"
-                aria-label="password"
-                type="password"
-                name="password"
+                aria-label="username"
+                label="E-mail Address"
+                name="username"
+                type="text"
                 InputProps={{
-                  endAdornment: (
-                    <Button className={classes.forgotLink}>Forgot?</Button>
-                  ),
                   classes: { underline: classes.underline },
-                  style: {
-                    fontSize: 28,
-                  },
                 }}
               />
             </FormControl>
-            <Grid className={classes.buttonContainer}>
-              <Button
-                className={classes.loginButton}
-                type="submit"
-                variant="contained"
-                size="large"
-              >
-                Login
-              </Button>
-            </Grid>
           </Grid>
-        </form>
-      </Box>
-    </Box>
+          <FormControl className={classes.formControl} margin="normal" required>
+            <TextField
+              label="password"
+              aria-label="password"
+              type="password"
+              name="password"
+              InputProps={{
+                endAdornment: (
+                  <Button className={classes.forgotLink}>Forgot?</Button>
+                ),
+                classes: { underline: classes.underline },
+                style: {
+                  fontSize: 28,
+                },
+              }}
+            />
+          </FormControl>
+          <Grid className={classes.buttonContainer}>
+            <Button
+              className={classes.loginButton}
+              type="submit"
+              variant="contained"
+              size="large"
+            >
+              Login
+            </Button>
+          </Grid>
+        </Grid>
+      </form>
+    </BannerContainer>
   );
 };
 
