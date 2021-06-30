@@ -16,7 +16,8 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   banner: {
-    backgroundImage: `linear-gradient(#3A8DFF, #86B9FF), url(${BannerBG})`,
+    backgroundImage: `url(${BannerBG})`,
+    backgroundSize: 'cover',
     width: "100%",
     height: "8vh",
     display: "flex",
@@ -25,8 +26,19 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('landscape')]: {
       flexDirection: "column",
       justifyContent:"center",
-      width: "40%",
+      maxWidth: "40%",
       height: "100vh",
+    }
+  },
+  mask:{
+    width: "100%",
+    height: "8vh",
+    position: "absolute",
+    zIndex: 0,
+    background: "linear-gradient(rgba(58, 141, 255, .8), rgba(134, 185, 255, 1))",
+    [theme.breakpoints.up('landscape')]: {
+      maxWidth: "40%",
+      height: "100%",
     }
   },
   chatBubble: {
@@ -34,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
     height: 32,
     display: "block",
     margin: "0 15px",
+    zIndex: 100,
     [theme.breakpoints.up('landscape')]: {
       width: 48,
       height: 48,
@@ -41,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
   bannerText: {
     color: "#FFFFFF",
+    zIndex: 100,
     [theme.breakpoints.up('landscape')]: {
       fontSize: 18,
       width: "50%",
@@ -67,6 +81,8 @@ const BannerContainer = (props) => {
   return (
     <Box className={classes.container} justify="center">
       <Box className={classes.banner}>
+        <Box className={classes.mask}>
+        </Box>
         <img className={classes.chatBubble} src={BubbleSVG} alt="logo" />
         <p className={classes.bannerText}>
           Converse with anyone with any language
