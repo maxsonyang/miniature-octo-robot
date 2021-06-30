@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
     }
   },
   banner: {
-    backgroundImage: `url(${BannerBG})`,
     backgroundSize: 'cover',
     width: "100%",
     height: "8vh",
@@ -28,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
       justifyContent:"center",
       maxWidth: "40%",
       height: "100vh",
+      backgroundImage: `url(${BannerBG})`,
     }
   },
   mask:{
@@ -35,10 +35,11 @@ const useStyles = makeStyles((theme) => ({
     height: "8vh",
     position: "absolute",
     zIndex: 0,
-    background: "linear-gradient(rgba(58, 141, 255, .8), rgba(134, 185, 255, 1))",
+    background: "linear-gradient(rgba(58, 141, 255, 1), rgba(134, 185, 255, 1))",
     [theme.breakpoints.up('landscape')]: {
       maxWidth: "40%",
       height: "100%",
+      background: "linear-gradient(rgba(58, 141, 255, .8), rgba(134, 185, 255, 1))",
     }
   },
   chatBubble: {
