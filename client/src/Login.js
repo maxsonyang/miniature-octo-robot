@@ -56,6 +56,10 @@ const useStyles = makeStyles(() => ({
   formControl: {
     width: "100%"
   },
+  forgotLink: {
+    color: "#3A8DFF",
+    fontSize: 12,
+  },
   label: {
     color: "#B1B1B1",
     fontSize: 12,
@@ -104,7 +108,7 @@ const Login = (props) => {
   return (
     <Grid container justify="center">
       <div className={classes.banner}>
-        <img className={classes.chatBubble} src={BubbleSVG} alt="logo"/>
+        <img className={classes.chatBubble} src={BubbleSVG} alt="logo" />
         <p className={classes.bannerText}>
           Converse with anyone in any language
         </p>
@@ -148,6 +152,14 @@ const Login = (props) => {
                 aria-label="password"
                 type="password"
                 name="password"
+                InputProps={{
+                  endAdornment: (
+                    <Button className={classes.forgotLink}>Forgot?</Button>
+                  ),
+                  style: {
+                    fontSize: 28
+                  }
+                }}
               />
             </FormControl>
             <Grid className={classes.buttonContainer}>
