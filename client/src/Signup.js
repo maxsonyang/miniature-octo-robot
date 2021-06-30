@@ -57,6 +57,12 @@ const Signup = (props) => {
     const username = event.target.username.value;
     const email = event.target.email.value;
     const password = event.target.password.value;
+    const confirmPassword = event.target.confirmPassword.value;
+
+    if (password !== confirmPassword) {
+      setFormErrorMessage({ confirmPassword: "Passwords must match" });
+      return;
+    }
 
     await register({ username, email, password });
   };
@@ -89,7 +95,10 @@ const Signup = (props) => {
                 name="username"
                 type="text"
                 InputProps={{
-                  classes: { underline: landingClasses.underline },
+                  classes: {
+                    underline: landingClasses.underline,
+                    input: landingClasses.textField,
+                  },
                 }}
                 required
               />
@@ -103,7 +112,10 @@ const Signup = (props) => {
                 type="email"
                 name="email"
                 InputProps={{
-                  classes: { underline: landingClasses.underline },
+                  classes: {
+                    underline: landingClasses.underline,
+                    input: landingClasses.textField,
+                  },
                 }}
                 required
               />
@@ -121,7 +133,34 @@ const Signup = (props) => {
                 inputProps={{ minLength: 6 }}
                 name="password"
                 InputProps={{
-                  classes: { underline: landingClasses.underline },
+                  classes: {
+                    underline: landingClasses.underline,
+                    input: landingClasses.protectedField,
+                  },
+                }}
+                required
+              />
+              <FormHelperText>
+                {formErrorMessage.confirmPassword}
+              </FormHelperText>
+            </FormControl>
+          </Grid>
+          <Grid>
+            <FormControl
+              className={landingClasses.formControl}
+              error={!!formErrorMessage.confirmPassword}
+            >
+              <TextField
+                label="Confirm Password"
+                aria-label="confirm password"
+                type="password"
+                inputProps={{ minLength: 6 }}
+                name="confirmPassword"
+                InputProps={{
+                  classes: {
+                    underline: landingClasses.underline,
+                    input: landingClasses.protectedField,
+                  },
                 }}
                 required
               />
