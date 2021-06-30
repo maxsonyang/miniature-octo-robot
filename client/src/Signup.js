@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { register } from "./store/utils/thunkCreators";
-import landingTheme from "./components/Landing/theme";
+import landingTheme from "./themes/landingTheme";
 import BannerContainer from "./components/Landing/Banner";
 
 const useStyles = makeStyles((theme) => ({

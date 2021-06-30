@@ -9,7 +9,6 @@ export const theme = createMuiTheme({
       md: 960,
       lg: 1280,
       xl: 1920,
-      portrait: 768,
       landscape: 812,
     },
   }),
