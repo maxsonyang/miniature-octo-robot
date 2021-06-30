@@ -34,8 +34,12 @@ const useStyles = makeStyles((theme) => ({
     margin: "auto 0",
     [theme.breakpoints.up('landscape')]: {
       margin: 0,
-      width: "75%",
+      width: "70%",
       maxHeight: "80%",
+    },
+    [theme.breakpoints.up('md')]: {
+      margin: "auto",
+      marginBottom: "25vh",
     }
   },
   forgotLink: {
@@ -109,7 +113,7 @@ const Login = (props) => {
                   <Button className={classes.forgotLink}>Forgot?</Button>
                 ),
                 classes: { 
-                  input: landingClasses.textField,
+                  input: landingClasses.protectedField,
                   underline: landingClasses.underline 
                 },
               }}

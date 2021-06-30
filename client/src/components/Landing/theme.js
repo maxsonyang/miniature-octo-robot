@@ -59,6 +59,12 @@ const landingTheme = makeStyles((theme) => ({
   textField: {
     ...theme.typography,
     width: "100%",
+    height: 28,
+  },
+  protectedField: {
+    ...theme.typography,
+    width: "100%",
+    fontSize: 24,
   },
   underline: {
     "&:before": {

@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   form: {
     margin: "auto 0",
     [theme.breakpoints.up('landscape')]: {
-      width: "75%",
+      width: "70%",
       maxHeight: "100%",
     }
   },
@@ -57,12 +57,6 @@ const Signup = (props) => {
     const username = event.target.username.value;
     const email = event.target.email.value;
     const password = event.target.password.value;
-    const confirmPassword = event.target.confirmPassword.value;
-
-    if (password !== confirmPassword) {
-      setFormErrorMessage({ confirmPassword: "Passwords must match" });
-      return;
-    }
 
     await register({ username, email, password });
   };
@@ -126,27 +120,6 @@ const Signup = (props) => {
                 type="password"
                 inputProps={{ minLength: 6 }}
                 name="password"
-                InputProps={{
-                  classes: { underline: landingClasses.underline },
-                }}
-                required
-              />
-              <FormHelperText>
-                {formErrorMessage.confirmPassword}
-              </FormHelperText>
-            </FormControl>
-          </Grid>
-          <Grid>
-            <FormControl
-              className={landingClasses.formControl}
-              error={!!formErrorMessage.confirmPassword}
-            >
-              <TextField
-                label="Confirm Password"
-                aria-label="confirm password"
-                type="password"
-                inputProps={{ minLength: 6 }}
-                name="confirmPassword"
                 InputProps={{
                   classes: { underline: landingClasses.underline },
                 }}
