@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     [theme.breakpoints.up('landscape')]: {
       flexDirection: "row",
-    }
+    },
   },
   banner: {
     backgroundSize: 'cover',
@@ -51,15 +51,32 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.up('landscape')]: {
       width: 48,
       height: 48,
-    }
+    },
+    [theme.breakpoints.up('md')]: {
+      width: 56,
+      height: 56,
+    },
+    [theme.breakpoints.up('lg')]: {
+      width: 72,
+      height: 72,
+    },
   },
   bannerText: {
     color: "#FFFFFF",
     zIndex: 100,
-    [theme.breakpoints.up('landscape')]: {
+    [theme.breakpoints.up('portrait')]: {
       fontSize: 18,
+    },
+    [theme.breakpoints.up('landscape')]: {
       width: "50%",
       textAlign: "center",
+    },
+    [theme.breakpoints.up("md")]: {
+      width: "60%",
+      fontSize: 24,
+    },
+    [theme.breakpoints.up("lg")]: {
+      fontSize: 32,
     }
   },
   contentBox: {
@@ -67,12 +84,12 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column-reverse",
     alignItems: "center",
     height: "92vh",
-    width: "80%",
+    width: "100%",
+    overflowY: "scroll",
     [theme.breakpoints.up('landscape')]: {
+      height: "100vh",
       flexDirection: "column",
       width: "65%",
-      height: "100vh",
-      margin: "auto",
     }
   },
 }));

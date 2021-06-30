@@ -14,6 +14,8 @@ const landingTheme = makeStyles((theme) => ({
     [theme.breakpoints.up("landscape")]: {
       fontSize: 16,
       fontWeight: 700,
+      padding: "10px 30px",
+      marginBottom: "5vh",
     },
   },
   secondaryButton: {
@@ -21,10 +23,10 @@ const landingTheme = makeStyles((theme) => ({
     borderRadius: 8,
     boxShadow: "0 2px 20px 0 rgba(88,133,196,0.10)",
     maxWidth: "fit-content",
-    padding: "10px 50px",
+    padding: "5px 30px",
     [theme.breakpoints.up('landscape')]: {
       marginLeft: 30,
-      height: 60
+      padding: "10px 30px",
     }
   },
   primaryHeader: {
@@ -32,7 +34,7 @@ const landingTheme = makeStyles((theme) => ({
     fontWeight: 600,
     fontSize: 24,
     [theme.breakpoints.up('landscape')]: {
-      fontSize: 32,
+      fontSize: 24,
     }
   },
   secondaryHeader: {
@@ -47,8 +49,16 @@ const landingTheme = makeStyles((theme) => ({
     }
   },
   formControl: {
-    width: "100%",
+    width: "90vw",
     marginTop: 15,
+    [theme.breakpoints.up('landscape')]: {
+      width: "100%",
+      marginTop: 10,
+    }
+  },
+  textField: {
+    ...theme.typography,
+    width: "100%",
   },
   underline: {
     "&:before": {

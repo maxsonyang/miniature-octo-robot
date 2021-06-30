@@ -25,15 +25,17 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 40,
     [theme.breakpoints.up('landscape')]: {
       flexDirection: "row",
-      padding: "20px 40px",
+      padding: "10px 40px 0 40px",
       justifyContent: "flex-end",
+      marginBottom: 0,
     }
   },
   form: {
     margin: "auto 0",
     [theme.breakpoints.up('landscape')]: {
-      margin: "5vh 0",
-      width: "60%",
+      margin: 0,
+      width: "75%",
+      maxHeight: "80%",
     }
   },
   forgotLink: {
@@ -88,7 +90,10 @@ const Login = (props) => {
                 name="username"
                 type="text"
                 InputProps={{
-                  classes: { underline: landingClasses.underline },
+                  classes: { 
+                    input: landingClasses.textField,
+                    underline: landingClasses.underline 
+                  },
                 }}
               />
             </FormControl>
@@ -103,10 +108,9 @@ const Login = (props) => {
                 endAdornment: (
                   <Button className={classes.forgotLink}>Forgot?</Button>
                 ),
-                classes: { underline: landingClasses.underline },
-                style: {
-                  fontSize: 28,
-                  lineHeight: 12,
+                classes: { 
+                  input: landingClasses.textField,
+                  underline: landingClasses.underline 
                 },
               }}
             />

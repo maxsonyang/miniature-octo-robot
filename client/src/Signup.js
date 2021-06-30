@@ -24,21 +24,18 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
     marginBottom: 40,
-    [theme.breakpoints.up("landscape")]: {
+    [theme.breakpoints.up('landscape')]: {
       flexDirection: "row",
-      padding: "20px 40px",
+      padding: "10px 40px 0 40px",
       justifyContent: "flex-end",
-    },
+      marginBottom: 0,
+    }
   },
   form: {
-    margin: "7vh 0",
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
+    margin: "auto 0",
     [theme.breakpoints.up('landscape')]: {
-      margin: 0,
-      width: "60%",
+      width: "75%",
+      maxHeight: "100%",
     }
   },
   forgotLink: {
@@ -48,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Login = (props) => {
+const Signup = (props) => {
   const history = useHistory();
   const { user, register } = props;
   const [formErrorMessage, setFormErrorMessage] = useState({});
@@ -190,4 +187,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);
