@@ -51,10 +51,21 @@ const useStyles = makeStyles(() => ({
     marginBottom: 40,
   },
   login: {
-    margin: "auto 0"
+    margin: "auto 0",
   },
   formControl: {
-    width: "100%"
+    width: "100%",
+  },
+  underline: {
+    "&:before": {
+      borderBottom: "2px solid #B1B1B1"
+    },
+    "&:not(.Mui-disabled):hover::before": {
+      borderBottom: "2px solid #86B9FF"
+    },
+    "&:after": {
+      borderBottom: "2px solid #3A8DFF"
+    }
   },
   forgotLink: {
     color: "#3A8DFF",
@@ -67,13 +78,13 @@ const useStyles = makeStyles(() => ({
   loginBox: {
     display: "flex",
     flexDirection: "column-reverse",
-    height: "100vh",
-    width: "80%"
+    height: "92vh",
+    width: "80%",
   },
   banner: {
     backgroundImage: `linear-gradient(#3A8DFF, #86B9FF), url(${BannerBG})`,
     width: "100%",
-    height: 70,
+    height: "8vh",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -86,7 +97,7 @@ const useStyles = makeStyles(() => ({
   },
   bannerText: {
     color: "#FFFFFF",
-  }
+  },
 }));
 
 const Login = (props) => {
@@ -139,6 +150,9 @@ const Login = (props) => {
                   label="E-mail Address"
                   name="username"
                   type="text"
+                  InputProps={{
+                    classes: { underline: classes.underline },
+                  }}
                 />
               </FormControl>
             </Grid>
@@ -156,9 +170,10 @@ const Login = (props) => {
                   endAdornment: (
                     <Button className={classes.forgotLink}>Forgot?</Button>
                   ),
+                  classes: { underline: classes.underline },
                   style: {
-                    fontSize: 28
-                  }
+                    fontSize: 28,
+                  },
                 }}
               />
             </FormControl>
