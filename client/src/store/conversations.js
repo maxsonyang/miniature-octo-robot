@@ -69,10 +69,10 @@ export const addConversation = (recipientId, newMessage) => {
   };
 };
 
-export const markAsRead = (user) => {
+export const markAsRead = (userId) => {
   return {
     type: MARK_AS_READ,
-    payload: { user }
+    payload: { userId }
   }
 }
 
@@ -103,7 +103,7 @@ const reducer = (state = [], action) => {
     case MARK_AS_READ:
       return markMessagesAsRead(
         state,
-        action.payload.user
+        action.payload.userId
       )
     default:
       return state;

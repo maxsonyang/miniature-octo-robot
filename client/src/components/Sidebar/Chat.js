@@ -24,13 +24,13 @@ const styles = {
 class Chat extends Component {
   handleClick = async (conversation) => {
     await this.props.setActiveChat(conversation.otherUser.username);
-    await this.props.markAsRead(conversation.otherUser.username);
+    await this.props.markAsRead(conversation.otherUser.id);
   };
 
   render() {
     const { classes } = this.props;
     const otherUser = this.props.conversation.otherUser;
-    const unreadMessages = this.props.conversation.unreadMessages
+    const unreadMessages = this.props.conversation.unreadCount;
     return (
       <Box
         onClick={() => this.handleClick(this.props.conversation)}
