@@ -90,6 +90,7 @@ export const postMessage = (body) => async (dispatch) => {
     const data = await saveMessage(body);
     dispatch(addConversation(body.recipientId, data.message));
     sendMessage(data, body);
+    return data;
   } catch (error) {
     console.error(error);
   }
@@ -108,10 +109,10 @@ export const updateActiveConvo = (otherUser) => async (dispatch) => {
   try {
     const { data } = await axios.get("/auth/user");
     dispatch(gotUser(data));
-    dispatch(setActiveChat(otherUser));
+    dispatch(setActiveChat(otherUser.username));
     socket.emit("set-active", {
       user: data.id,
-      other: otherUser,
+      other: otherUser.id,
     });
   } catch (error) {
     console.log(error);

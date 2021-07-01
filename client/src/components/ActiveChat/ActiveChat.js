@@ -62,6 +62,7 @@ const ActiveChat = (props) => {
             <Input
               otherUser={conversation.otherUser}
               conversationId={conversation.id}
+              updateLastRead={updateLastRead}
               user={user}
             />
           </Box>

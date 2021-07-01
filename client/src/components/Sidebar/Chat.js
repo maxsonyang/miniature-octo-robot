@@ -23,7 +23,10 @@ const styles = {
 
 class Chat extends Component {
   handleClick = async (conversation) => {
-    await this.props.updateActiveConvo(conversation.otherUser.username);
+    await this.props.updateActiveConvo({
+      username: conversation.otherUser.username,
+      id: conversation.otherUser.id,
+    });
     await this.props.markAsRead(conversation.otherUser.id);
   };
 
@@ -51,8 +54,8 @@ class Chat extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    updateActiveConvo: (id) => {
-      dispatch(updateActiveConvo(id));
+    updateActiveConvo: (data) => {
+      dispatch(updateActiveConvo(data));
     },
     markAsRead: (user) => {
       dispatch(markAsRead(user));

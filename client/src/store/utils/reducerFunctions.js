@@ -96,10 +96,44 @@ export function markMessagesAsRead(state, userId) {
         axios.post("/api/conversations/read", {
           otherUser: convo.otherUser,
         })
+        const messagesCopy = [...convo.messages];
+        for (let i = messagesCopy.length - 1; i >= 0; i--) {
+          const message = messagesCopy[i];
+          if (message.read || message.senderId !== userId) {
+            break;
+          } else {
+            message.read = true;
+          }
+        }
       } catch (error) {
         console.error(error);
       }
       const newConvo = { ...convo };
+      newConvo.unreadCount = 0;
+      return newConvo;
+    } else {
+      return convo;
+    }
+  });
+}
+
+// marks senders messages as read if recipient has viewed them.
+export function markMineAsRead(state, userId) {
+  return state.map((convo) => {
+    if (convo.otherUser.id === userId) {
+      const messagesCopy = [...convo.messages];
+      for (let i = messagesCopy.length - 1; i >= 0; i--) {
+        const message = messagesCopy[i];
+        if (message.read || message.senderId === userId) {
+          break;
+        } else {
+          message.read = true;
+        }
+      }
+      const newConvo = { 
+        ...convo,
+        messages: messagesCopy,
+      };
       newConvo.unreadCount = 0;
       return newConvo;
     } else {

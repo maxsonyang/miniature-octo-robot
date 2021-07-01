@@ -11,7 +11,6 @@ router.post("/", async (req, res, next) => {
     }
     const senderId = req.user.id;
     const { recipientId, text, sender } = req.body;
-    console.log(activeConversations);
     // if we don't have conversation id, find a conversation to make sure it doesn't already exist
     let conversation = await Conversation.findConversation(
       senderId,
@@ -32,15 +31,23 @@ router.post("/", async (req, res, next) => {
       conversation.changed('updatedAt', true);
       await conversation.save();
     }
+
+    const otherUser =
+      senderId === conversation.user1Id
+        ? conversation.user2Id
+        : conversation.user1Id;
+
+    const read = activeConversations[otherUser] === senderId;
+
     const message = await Message.create({
       senderId,
       text,
       conversationId: conversation.id,
+      read
     });
     
     await conversation.save();
-
-    res.json({ message, sender });
+    res.json({ message, sender, read });
   } catch (error) {
     next(error);
   }

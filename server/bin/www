@@ -51,6 +51,10 @@ io.on("connection", (socket) => {
   socket.on("set-active", (data) => {
     const { user, other } = data;
     activeConversations[user] = other;
+    socket.broadcast.emit("update-active-read", {
+      sender: other,
+      recipient: user
+    });
   })
 
   socket.on("logout", (id) => {

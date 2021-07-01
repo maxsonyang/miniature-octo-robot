@@ -40,7 +40,11 @@ class Input extends Component {
       conversationId: this.props.conversationId,
       sender: this.props.conversationId ? null : this.props.user,
     };
-    await this.props.postMessage(reqBody);
+    const response = await this.props.postMessage(reqBody);
+    console.log(response);
+    if (response.read) {
+      this.props.updateLastRead(response.message.id);
+    }
     this.setState({
       text: "",
     });
@@ -75,7 +79,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     postMessage: (message) => {
-      dispatch(postMessage(message));
+      return dispatch(postMessage(message));
     },
   };
 };
