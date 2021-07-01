@@ -9,7 +9,7 @@ export const addMessageToStore = (state, payload) => {
       id: message.conversationId,
       otherUser: sender,
       messages: [message],
-      unreadMessages: 1,
+      unreadCount: 1,
     };
     newConvo.latestMessageText = message.text;
     return [newConvo, ...state];
@@ -20,8 +20,9 @@ export const addMessageToStore = (state, payload) => {
       const convoCopy = { ...convo };
       convoCopy.messages.push(message);
       convoCopy.latestMessageText = message.text;
+      
       if (convo.otherUser.username !== activeConversation) {
-        convoCopy.unreadMessages = convoCopy.unreadMessages + 1;
+        convoCopy.unreadCount = convoCopy.unreadCount + 1;
       }
       return convoCopy;
     } else {
@@ -90,7 +91,6 @@ export const addNewConvoToStore = (state, recipientId, message) => {
 
 export function markMessagesAsRead(state, userId) {
   return state.map((convo) => {
-    console.log(convo.otherUser.id, userId);
     if (convo.otherUser.id === userId) {
       try {
         axios.post("/api/conversations/read", {
@@ -100,7 +100,7 @@ export function markMessagesAsRead(state, userId) {
         console.error(error);
       }
       const newConvo = { ...convo };
-      newConvo.unreadMessages = 0;
+      newConvo.unreadCount = 0;
       return newConvo;
     } else {
       return convo;
