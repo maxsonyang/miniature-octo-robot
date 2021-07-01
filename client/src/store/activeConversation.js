@@ -1,3 +1,5 @@
+import { updateActiveConvo } from "./utils/thunkCreators";
+
 const SET_ACTIVE_CHAT = "SET_ACTIVE_CHAT";
 
 export const setActiveChat = (username) => {

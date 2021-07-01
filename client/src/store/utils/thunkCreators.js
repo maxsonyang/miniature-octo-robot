@@ -5,6 +5,9 @@ import {
   addConversation,
   setSearchedUsers,
 } from "../conversations";
+import {
+  setActiveChat
+} from "../activeConversation";
 import { gotUser, setFetchingStatus } from "../user";
 
 // USER THUNK CREATORS
@@ -100,3 +103,17 @@ export const searchUsers = (searchTerm) => async (dispatch) => {
     console.error(error);
   }
 };
+
+export const updateActiveConvo = (otherUser) => async (dispatch) => {
+  try {
+    const { data } = await axios.get("/auth/user");
+    dispatch(gotUser(data));
+    dispatch(setActiveChat(otherUser));
+    socket.emit("set-active", {
+      user: data.id,
+      other: otherUser,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}

@@ -158,7 +158,7 @@ router.post("/read", async(req, res, next) => {
           const message = messages[msg_i];
           // Stop updating read messages if we encounter our own or a read message.
           if (message.senderId === userId || message.read) {
-            continue;
+            break;
           } else {
             const message_record = convo.messages[msg_i];
             message_record.read = true;
