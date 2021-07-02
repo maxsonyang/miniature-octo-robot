@@ -4,15 +4,15 @@ import { Box, Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: "#3A8DFF",
+    backgroundColor: theme.palette.primary.main,
     borderRadius: "100vh",
     textAlign: "center",
-    marginRight: "10px",
-    padding: "2px 8px"
+    marginRight: theme.spacing(2),
+    padding: theme.spacing(.25, 1),
   },
   count: {
     color: "#FFFFFF",
-    fontSize: "12px",
+    fontSize: theme.typography.unread.fontSize,
     fontWeight: 900,
   }
 }));
