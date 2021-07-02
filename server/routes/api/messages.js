@@ -46,7 +46,6 @@ router.post("/", async (req, res, next) => {
       read
     });
     
-    await conversation.save();
     res.json({ message, sender, read });
   } catch (error) {
     next(error);
