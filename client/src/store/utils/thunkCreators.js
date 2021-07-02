@@ -4,6 +4,7 @@ import {
   gotConversations,
   addConversation,
   setSearchedUsers,
+  markAsRead
 } from "../conversations";
 import {
   setActiveChat
@@ -105,6 +106,17 @@ export const searchUsers = (searchTerm) => async (dispatch) => {
   }
 };
 
+export const markMessagesAsRead = (convo) => async (dispatch) => {
+  try {
+    axios.post("/api/conversations/read", {
+      otherUser: convo.otherUser,
+    });
+    dispatch(markAsRead(convo.otherUser.id));
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export const updateActiveConvo = (otherUser) => async (dispatch) => {
   try {
     const { data } = await axios.get("/auth/user");
@@ -115,6 +127,6 @@ export const updateActiveConvo = (otherUser) => async (dispatch) => {
       other: otherUser.id,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }

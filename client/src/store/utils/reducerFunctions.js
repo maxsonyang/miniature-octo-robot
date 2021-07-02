@@ -1,5 +1,3 @@
-import axios from "axios";
-
 export const addMessageToStore = (state, payload) => {
   const { message, sender } = payload;
   let activeConversation = payload.activeConversation;
@@ -92,21 +90,14 @@ export const addNewConvoToStore = (state, recipientId, message) => {
 export const markMessagesAsRead = (state, userId) => {
   return state.map((convo) => {
     if (convo.otherUser.id === userId) {
-      try {
-        axios.post("/api/conversations/read", {
-          otherUser: convo.otherUser,
-        })
-        const messagesCopy = [...convo.messages];
-        for (let i = messagesCopy.length - 1; i >= 0; i--) {
-          const message = messagesCopy[i];
-          if (message.read || message.senderId !== userId) {
-            break;
-          } else {
-            message.read = true;
-          }
+      const messagesCopy = [...convo.messages];
+      for (let i = messagesCopy.length - 1; i >= 0; i--) {
+        const message = messagesCopy[i];
+        if (message.read || message.senderId !== userId) {
+          break;
+        } else {
+          message.read = true;
         }
-      } catch (error) {
-        console.error(error);
       }
       const newConvo = { ...convo };
       newConvo.unreadCount = 0;

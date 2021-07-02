@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import { Box } from "@material-ui/core";
 import { BadgeAvatar, ChatContent } from "../Sidebar";
 import { withStyles } from "@material-ui/core/styles";
-import { updateActiveConvo } from "../../store/utils/thunkCreators";
-import { markAsRead } from "../../store/conversations";
+import { updateActiveConvo, markMessagesAsRead } from "../../store/utils/thunkCreators";
 import { connect } from "react-redux";
 import UnreadMessages from "./UnreadMessages";
 
@@ -27,7 +26,7 @@ class Chat extends Component {
       username: conversation.otherUser.username,
       id: conversation.otherUser.id,
     });
-    await this.props.markAsRead(conversation.otherUser.id);
+    await this.props.markMessagesAsRead(conversation);
   };
 
   render() {
@@ -57,8 +56,8 @@ const mapDispatchToProps = (dispatch) => {
     updateActiveConvo: (data) => {
       dispatch(updateActiveConvo(data));
     },
-    markAsRead: (user) => {
-      dispatch(markAsRead(user));
+    markMessagesAsRead: (user) => {
+      dispatch(markMessagesAsRead(user));
     }
   };
 };
