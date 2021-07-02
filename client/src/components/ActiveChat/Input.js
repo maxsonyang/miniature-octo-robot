@@ -41,7 +41,7 @@ class Input extends Component {
       sender: this.props.conversationId ? null : this.props.user,
     };
     const response = await this.props.postMessage(reqBody);
-    console.log(response);
+
     if (response.read) {
       this.props.updateLastRead(response.message.id);
     }
