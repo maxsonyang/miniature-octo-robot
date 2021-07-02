@@ -100,72 +100,19 @@ router.post("/read", async(req, res, next) => {
     }
     const userId = req.user.id;
     const otherId = req.body.otherUser.id;
-    const conversations = await Conversation.findAll({
-      where: {
-        [Op.or]: {
-          user1Id: userId,
-          user2Id: userId,
-        },
-      },
-      attributes: ["id"],
-      order: [
-        ["updatedAt", "DESC"],
-        [Message, "createdAt", "ASC"],
-      ],
-      include: [
-        { model: Message },
-        {
-          model: User,
-          as: "user1",
-          where: {
-            id: {
-              [Op.not]: userId,
-            },
-          },
-          attributes: ["id", "username", "photoUrl"],
-          required: false,
-        },
-        {
-          model: User,
-          as: "user2",
-          where: {
-            id: {
-              [Op.not]: userId,
-            },
-          },
-          attributes: ["id", "username", "photoUrl"],
-          required: false,
-        },
-      ],
-    });
-
-    for (let i = 0; i < conversations.length; i++) {
-      const convo = conversations[i];
-      const convoJSON = convo.toJSON();
-      let otherUser;
-      
-      // set a property "otherUser" so that frontend will have easier access
-      // also get the last read ID of the current user
-      if (convoJSON.user1) {
-        otherUser = convoJSON.user1;
-      } else if (convoJSON.user2) {
-        otherUser = convoJSON.user2;
-      }
-
-      if (otherUser.id === otherId) {
-        const messages = convoJSON.messages;
-        for (let msg_i = messages.length - 1; msg_i >= 0; msg_i--) {
-          const message = messages[msg_i];
-          // Stop updating read messages if we encounter our own or a read message.
-          if (message.senderId === userId || message.read) {
-            break;
-          } else {
-            const message_record = convo.messages[msg_i];
-            message_record.read = true;
-            await message_record.save();
-          }
-        }
+    const convo = await Conversation.findConversation(userId, otherId);
+    const convoJSON = convo.toJSON();
+    const messages = convoJSON.messages;
+    
+    for (let msg_i = messages.length - 1; msg_i >= 0; msg_i--) {
+      const message = messages[msg_i];
+      // Stop updating read messages if we encounter our own or a read message.
+      if (message.senderId === userId || message.read) {
         break;
+      } else {
+        const message_record = convo.messages[msg_i];
+        message_record.read = true;
+        await message_record.save();
       }
     }
 
