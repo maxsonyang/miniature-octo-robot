@@ -90,16 +90,17 @@ export const addNewConvoToStore = (state, recipientId, message) => {
 export const markMessagesAsRead = (state, userId) => {
   return state.map((convo) => {
     if (convo.otherUser.id === userId) {
-      const messagesCopy = [...convo.messages];
-      for (let i = messagesCopy.length - 1; i >= 0; i--) {
-        const message = messagesCopy[i];
+      for (let i = convo.messages.length - 1; i >= 0; i--) {
+        const message = convo.messages[i];
         if (message.read || message.senderId !== userId) {
           break;
         } else {
           message.read = true;
         }
       }
-      const newConvo = { ...convo };
+      const newConvo = { 
+        ...convo,
+      };
       newConvo.unreadCount = 0;
       return newConvo;
     } else {
@@ -112,9 +113,8 @@ export const markMessagesAsRead = (state, userId) => {
 export function markMineAsRead(state, userId) {
   return state.map((convo) => {
     if (convo.otherUser.id === userId) {
-      const messagesCopy = [...convo.messages];
-      for (let i = messagesCopy.length - 1; i >= 0; i--) {
-        const message = messagesCopy[i];
+      for (let i = convo.messages.length - 1; i >= 0; i--) {
+        const message = convo.messages[i];
         if (message.read || message.senderId === userId) {
           break;
         } else {
@@ -122,8 +122,7 @@ export function markMineAsRead(state, userId) {
         }
       }
       const newConvo = { 
-        ...convo,
-        messages: messagesCopy,
+        ...convo
       };
       newConvo.unreadCount = 0;
       return newConvo;
