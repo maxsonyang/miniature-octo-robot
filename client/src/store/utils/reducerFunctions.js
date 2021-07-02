@@ -89,7 +89,7 @@ export const addNewConvoToStore = (state, recipientId, message) => {
   });
 };
 
-export function markMessagesAsRead(state, userId) {
+export const markMessagesAsRead = (state, userId) => {
   return state.map((convo) => {
     if (convo.otherUser.id === userId) {
       try {
