@@ -101,21 +101,22 @@ router.post("/read", async(req, res, next) => {
     const userId = req.user.id;
     const otherId = req.body.otherUser.id;
     const convo = await Conversation.findConversation(userId, otherId);
+
     const convoJSON = convo.toJSON();
     const messages = convoJSON.messages;
-    
-    for (let msg_i = messages.length - 1; msg_i >= 0; msg_i--) {
-      const message = messages[msg_i];
-      // Stop updating read messages if we encounter our own or a read message.
-      if (message.senderId === userId || message.read) {
-        break;
-      } else {
-        const message_record = convo.messages[msg_i];
-        message_record.read = true;
-        await message_record.save();
+    const updatedMessages = [];
+      for (let msg_i = messages.length - 1; msg_i >= 0; msg_i--) {
+        const message = messages[msg_i];
+        // Stop updating read messages if we encounter our own or a read message.
+        if (message.senderId === userId || message.read) {
+          break;
+        } else {
+          const message_record = convo.messages[msg_i];
+          updatedMessages.push(
+            Message.update({ read: true }, { where: { id: message_record.id } })
+          );
+        }
       }
-    }
-
     res.status(200);
   } catch (error) {
     next(error);
