@@ -41,7 +41,7 @@ const ActiveChat = (props) => {
       }
       return -1;
     });
-  }, [props.conversation, messages, user.id]);
+  }, [messages, user.id]);
 
   return (
     <Box className={classes.root}>
