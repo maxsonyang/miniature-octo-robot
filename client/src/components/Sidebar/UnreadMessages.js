@@ -18,7 +18,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const UnreadMessages = (props) => {
+  
   const classes = useStyles();
+
   return (
     props.unread > 0 && 
     <Box className={classes.root}>
