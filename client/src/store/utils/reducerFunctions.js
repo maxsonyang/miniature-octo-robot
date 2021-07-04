@@ -1,4 +1,6 @@
 export const addMessageToStore = (state, payload) => {
+  console.log("Pay of the load")
+  console.log(payload);
   const { message, sender } = payload;
   let activeConversation = payload.activeConversation;
   // if sender isn't null, that means the message needs to be put in a brand new convo
@@ -19,7 +21,7 @@ export const addMessageToStore = (state, payload) => {
       convoCopy.messages.push(message);
       convoCopy.latestMessageText = message.text;
       
-      if (convo.otherUser.username !== activeConversation) {
+      if (!message.read) {
         convoCopy.unreadCount = convoCopy.unreadCount + 1;
       }
       return convoCopy;

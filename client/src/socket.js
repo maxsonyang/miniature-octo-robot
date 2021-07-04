@@ -32,8 +32,7 @@ socket.on("connect", async () => {
   })
 
   socket.on("new-message", (data) => {
-    const { activeConversation } = store.getState();
-    store.dispatch(setNewMessage(data.message, data.sender, data.recipientId, activeConversation));
+    store.dispatch(setNewMessage(data.message, data.sender, data.read));
   });
 });
 
