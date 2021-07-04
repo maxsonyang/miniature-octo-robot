@@ -10,9 +10,8 @@ import {
 
 const socket = io(window.location.origin);
 
-socket.on("connect", () => {
-  console.log("connected to server");
-
+socket.on("connect", async () => {
+  
   socket.on("add-online-user", (id) => {
     store.dispatch(addOnlineUser(id));
   });
@@ -34,7 +33,7 @@ socket.on("connect", () => {
 
   socket.on("new-message", (data) => {
     const { activeConversation } = store.getState();
-    store.dispatch(setNewMessage(data.message, data.sender, activeConversation));
+    store.dispatch(setNewMessage(data.message, data.sender, data.recipientId, activeConversation));
   });
 });
 
