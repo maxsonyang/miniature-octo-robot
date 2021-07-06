@@ -22,7 +22,7 @@ router.get("/", async (req, res, next) => {
       attributes: ["id"],
       order: [
         ["updatedAt", "DESC"],
-        [Message, "createdAt", "ASC"]
+        [Message, "createdAt", "ASC"],
       ],
       include: [
         { model: Message },
@@ -54,8 +54,8 @@ router.get("/", async (req, res, next) => {
     for (let i = 0; i < conversations.length; i++) {
       const convo = conversations[i];
       const convoJSON = convo.toJSON();
-
       // set a property "otherUser" so that frontend will have easier access
+      // also get the last read ID of the current user
       if (convoJSON.user1) {
         convoJSON.otherUser = convoJSON.user1;
         delete convoJSON.user1;
@@ -73,8 +73,17 @@ router.get("/", async (req, res, next) => {
 
       // set properties for notification count and latest message preview
       const messages = convoJSON.messages;
-      // Feels hacky, but less costly than reversing all the messages.
+
       convoJSON.latestMessageText = messages[messages.length - 1].text;
+
+      const unreadCount = messages.reduce((total, msg) => {
+        if (msg.senderId === convoJSON.otherUser.id ) {
+          return total + (1 - msg.read);
+        }
+        return total;
+      }, 0);
+      convoJSON.unreadCount = unreadCount;
+
       conversations[i] = convoJSON;
     }
 
@@ -83,5 +92,36 @@ router.get("/", async (req, res, next) => {
     next(error);
   }
 });
+
+router.post("/read", async(req, res, next) => {
+  try {
+    if (!req.user) {
+      return res.sendStatus(401);
+    }
+    const userId = req.user.id;
+    const otherId = req.body.otherUser.id;
+    const convo = await Conversation.findConversation(userId, otherId);
+
+    const convoJSON = convo.toJSON();
+    const messages = convoJSON.messages;
+    const updatedMessages = [];
+      for (let msg_i = messages.length - 1; msg_i >= 0; msg_i--) {
+        const message = messages[msg_i];
+        // Stop updating read messages if we encounter our own or a read message.
+        if (message.senderId === userId || message.read) {
+          break;
+        } else {
+          const message_record = convo.messages[msg_i];
+          updatedMessages.push(
+            Message.update({ read: true }, { where: { id: message_record.id } })
+          );
+        }
+      }
+    res.status(200);
+  } catch (error) {
+    next(error);
+  }
+});
+
 
 module.exports = router;

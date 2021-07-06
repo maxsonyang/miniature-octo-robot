@@ -4,7 +4,11 @@ import {
   gotConversations,
   addConversation,
   setSearchedUsers,
+  markAsRead
 } from "../conversations";
+import {
+  setActiveChat
+} from "../activeConversation";
 import { gotUser, setFetchingStatus } from "../user";
 
 // USER THUNK CREATORS
@@ -87,6 +91,7 @@ export const postMessage = (body) => async (dispatch) => {
     const data = await saveMessage(body);
     dispatch(addConversation(body.recipientId, data.message));
     sendMessage(data, body);
+    return data;
   } catch (error) {
     console.error(error);
   }
@@ -100,3 +105,28 @@ export const searchUsers = (searchTerm) => async (dispatch) => {
     console.error(error);
   }
 };
+
+export const markMessagesAsRead = (convo) => async (dispatch) => {
+  try {
+    axios.post("/api/conversations/read", {
+      otherUser: convo.otherUser,
+    });
+    dispatch(markAsRead(convo.otherUser.id));
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export const updateActiveConvo = (otherUser) => async (dispatch) => {
+  try {
+    const { data } = await axios.get("/auth/user");
+    dispatch(gotUser(data));
+    dispatch(setActiveChat(otherUser.username));
+    socket.emit("set-active", {
+      user: data.id,
+      other: otherUser.id,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}

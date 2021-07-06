@@ -1,11 +1,13 @@
 export const addMessageToStore = (state, payload) => {
   const { message, sender } = payload;
+  let activeConversation = payload.activeConversation;
   // if sender isn't null, that means the message needs to be put in a brand new convo
   if (sender !== null) {
     const newConvo = {
       id: message.conversationId,
       otherUser: sender,
       messages: [message],
+      unreadCount: 1,
     };
     newConvo.latestMessageText = message.text;
     return [newConvo, ...state];
@@ -16,7 +18,10 @@ export const addMessageToStore = (state, payload) => {
       const convoCopy = { ...convo };
       convoCopy.messages.push(message);
       convoCopy.latestMessageText = message.text;
-
+      
+      if (convo.otherUser.username !== activeConversation) {
+        convoCopy.unreadCount = convoCopy.unreadCount + 1;
+      }
       return convoCopy;
     } else {
       return convo;
@@ -81,3 +86,48 @@ export const addNewConvoToStore = (state, recipientId, message) => {
     }
   });
 };
+
+export const markMessagesAsRead = (state, userId) => {
+  return state.map((convo) => {
+    if (convo.otherUser.id === userId) {
+      for (let i = convo.messages.length - 1; i >= 0; i--) {
+        const message = convo.messages[i];
+        if (message.read || message.senderId !== userId) {
+          break;
+        } else {
+          message.read = true;
+        }
+      }
+      const newConvo = { 
+        ...convo,
+      };
+      newConvo.unreadCount = 0;
+      return newConvo;
+    } else {
+      return convo;
+    }
+  });
+}
+
+// marks senders messages as read if recipient has viewed them.
+export function markMineAsRead(state, userId) {
+  return state.map((convo) => {
+    if (convo.otherUser.id === userId) {
+      for (let i = convo.messages.length - 1; i >= 0; i--) {
+        const message = convo.messages[i];
+        if (message.read || message.senderId === userId) {
+          break;
+        } else {
+          message.read = true;
+        }
+      }
+      const newConvo = { 
+        ...convo
+      };
+      newConvo.unreadCount = 0;
+      return newConvo;
+    } else {
+      return convo;
+    }
+  });
+}
