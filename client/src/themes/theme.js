@@ -8,7 +8,10 @@ export const theme = createMuiTheme({
       textTransform: "none",
       letterSpacing: 0,
       fontWeight: "bold"
-    }
+    },
+    unread: {
+      fontSize: 12
+    },
   },
   overrides: {
     MuiInput: {
