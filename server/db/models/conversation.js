@@ -1,6 +1,7 @@
-const { Op } = require("sequelize");
+const { Op, Sequelize } = require("sequelize");
 const db = require("../db");
 const Message = require("./message");
+const User = require("./user");
 
 const Conversation = db.define("conversation", {});
 
@@ -15,6 +16,10 @@ Conversation.findConversation = async function (user1Id, user2Id) {
       user2Id: {
         [Op.or]: [user1Id, user2Id]
       }
+    },
+    include: {
+      model: Message,
+      as: "messages"
     }
   });
 
