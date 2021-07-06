@@ -3,7 +3,6 @@ import { Redirect, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import {
   Grid,
-  Box,
   Typography,
   Button,
   FormControl,
@@ -11,9 +10,12 @@ import {
   FormHelperText,
 } from "@material-ui/core";
 import { register } from "./store/utils/thunkCreators";
+import landingTheme from "./themes/landingTheme";
+import BannerContainer from "./components/Landing/Banner";
 
-const Login = (props) => {
+const Signup = (props) => {
   const history = useHistory();
+  const landingClasses = landingTheme();
   const { user, register } = props;
   const [formErrorMessage, setFormErrorMessage] = useState({});
 
@@ -37,73 +39,116 @@ const Login = (props) => {
   }
 
   return (
-    <Grid container justify="center">
-      <Box>
-        <Grid container item>
-          <Typography>Need to log in?</Typography>
-          <Button onClick={() => history.push("/login")}>Login</Button>
-        </Grid>
-        <form onSubmit={handleRegister}>
+    <BannerContainer>
+      <Grid className={landingClasses.root} container item>
+        <Typography className={landingClasses.secondaryHeader}>
+          Need to log in?
+        </Typography>
+        <Button
+          className={landingClasses.secondaryButton}
+          onClick={() => history.push("/login")}
+        >
+          Login
+        </Button>
+      </Grid>
+      <form className={landingClasses.form} onSubmit={handleRegister}>
+        <Grid>
+          <h1 className={landingClasses.primaryHeader}>Create an Account.</h1>
           <Grid>
-            <Grid>
-              <FormControl>
-                <TextField
-                  aria-label="username"
-                  label="Username"
-                  name="username"
-                  type="text"
-                  required
-                />
-              </FormControl>
-            </Grid>
-            <Grid>
-              <FormControl>
-                <TextField
-                  label="E-mail address"
-                  aria-label="e-mail address"
-                  type="email"
-                  name="email"
-                  required
-                />
-              </FormControl>
-            </Grid>
-            <Grid>
-              <FormControl error={!!formErrorMessage.confirmPassword}>
-                <TextField
-                  aria-label="password"
-                  label="Password"
-                  type="password"
-                  inputProps={{ minLength: 6 }}
-                  name="password"
-                  required
-                />
-                <FormHelperText>
-                  {formErrorMessage.confirmPassword}
-                </FormHelperText>
-              </FormControl>
-            </Grid>
-            <Grid>
-              <FormControl error={!!formErrorMessage.confirmPassword}>
-                <TextField
-                  label="Confirm Password"
-                  aria-label="confirm password"
-                  type="password"
-                  inputProps={{ minLength: 6 }}
-                  name="confirmPassword"
-                  required
-                />
-                <FormHelperText>
-                  {formErrorMessage.confirmPassword}
-                </FormHelperText>
-              </FormControl>
-            </Grid>
-            <Button type="submit" variant="contained" size="large">
+            <FormControl className={landingClasses.formControl}>
+              <TextField
+                aria-label="username"
+                label="Username"
+                name="username"
+                type="text"
+                InputProps={{
+                  classes: {
+                    underline: landingClasses.underline,
+                    input: landingClasses.textField,
+                  },
+                }}
+                required
+              />
+            </FormControl>
+          </Grid>
+          <Grid>
+            <FormControl className={landingClasses.formControl}>
+              <TextField
+                label="E-mail address"
+                aria-label="e-mail address"
+                type="email"
+                name="email"
+                InputProps={{
+                  classes: {
+                    underline: landingClasses.underline,
+                    input: landingClasses.textField,
+                  },
+                }}
+                required
+              />
+            </FormControl>
+          </Grid>
+          <Grid>
+            <FormControl
+              className={landingClasses.formControl}
+              error={!!formErrorMessage.confirmPassword}
+            >
+              <TextField
+                aria-label="password"
+                label="Password"
+                type="password"
+                inputProps={{ minLength: 6 }}
+                name="password"
+                InputProps={{
+                  classes: {
+                    underline: landingClasses.underline,
+                    input: landingClasses.protectedField,
+                  },
+                }}
+                required
+              />
+              <FormHelperText>
+                {formErrorMessage.confirmPassword}
+              </FormHelperText>
+            </FormControl>
+          </Grid>
+          <Grid>
+            <FormControl
+              className={landingClasses.formControl}
+              error={!!formErrorMessage.confirmPassword}
+            >
+              <TextField
+                label="Confirm Password"
+                aria-label="confirm password"
+                type="password"
+                inputProps={{ minLength: 6 }}
+                name="confirmPassword"
+                InputProps={{
+                  classes: {
+                    underline: landingClasses.underline,
+                    input: landingClasses.protectedField,
+                  },
+                }}
+                required
+              />
+              <FormHelperText>
+                {formErrorMessage.confirmPassword}
+              </FormHelperText>
+            </FormControl>
+          </Grid>
+          <Grid container className={landingClasses.buttonContainer}>
+            <Button
+              className={landingClasses.primaryButton}
+              type="submit"
+              variant="contained"
+              size="large"
+            >
               Create
             </Button>
           </Grid>
-        </form>
-      </Box>
-    </Grid>
+        </Grid>
+      </form>
+    </BannerContainer>
   );
 };
 
@@ -121,4 +166,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Signup);
