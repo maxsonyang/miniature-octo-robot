@@ -18,21 +18,25 @@ export const theme = createMuiTheme({
     button: {
       textTransform: "none",
       letterSpacing: 0,
-      fontWeight: "bold"
+      fontWeight: 700,
+    },
+    header: {
+      fontWeight: 600,
+      fontSize: 24,
     },
     unread: {
-      fontSize: 12
+      fontSize: 12,
     },
   },
   overrides: {
     MuiInput: {
       input: {
-        fontWeight: "bold"
-      }
-    }
+        fontWeight: "bold",
+      },
+    },
   },
   palette: {
     primary: { main: "#3A8DFF" },
-    secondary: { main: "#B0B0B0" }
-  }
+    secondary: { main: "#B0B0B0" },
+  },
 });

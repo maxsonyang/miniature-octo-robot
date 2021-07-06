@@ -8,52 +8,15 @@ import {
   FormControl,
   TextField,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import { login } from "./store/utils/thunkCreators";
 import BannerContainer from "./components/Landing/Banner";
 import landingTheme from "./themes/landingTheme";
 
-const useStyles = makeStyles((theme) => ({
-  buttonContainer: {
-    display: "flex",
-    justifyContent: "space-around",
-  },
-  signUpContainer: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    marginBottom: 40,
-    [theme.breakpoints.up('landscape')]: {
-      flexDirection: "row",
-      padding: "10px 40px 0 40px",
-      justifyContent: "flex-end",
-      marginBottom: 0,
-    }
-  },
-  form: {
-    margin: "auto 0",
-    [theme.breakpoints.up('landscape')]: {
-      margin: 0,
-      width: "70%",
-      maxHeight: "80%",
-    },
-    [theme.breakpoints.up('md')]: {
-      margin: "auto",
-      marginBottom: "25vh",
-    }
-  },
-  forgotLink: {
-    ...theme.typography,
-    color: "#3A8DFF",
-    fontSize: 12,
-  },
-}));
 
 const Login = (props) => {
   const history = useHistory();
-  const { user, login } = props;
-  const classes = useStyles();
   const landingClasses = landingTheme();
+  const { user, login } = props;
   const handleLogin = async (event) => {
     event.preventDefault();
     const username = event.target.username.value;
@@ -68,7 +31,7 @@ const Login = (props) => {
 
   return (
     <BannerContainer>
-      <Grid className={classes.signUpContainer} container item>
+      <Grid className={landingClasses.root} container item>
         <Typography className={landingClasses.secondaryHeader}>
           Don't have an account?
         </Typography>
@@ -79,7 +42,7 @@ const Login = (props) => {
           Create Account
         </Button>
       </Grid>
-      <form className={classes.form} onSubmit={handleLogin}>
+      <form className={landingClasses.form} onSubmit={handleLogin}>
         <Grid>
           <h1 className={landingClasses.primaryHeader}>Welcome Back!</h1>
           <Grid>
@@ -94,15 +57,19 @@ const Login = (props) => {
                 name="username"
                 type="text"
                 InputProps={{
-                  classes: { 
+                  classes: {
                     input: landingClasses.textField,
-                    underline: landingClasses.underline 
+                    underline: landingClasses.underline,
                   },
                 }}
               />
             </FormControl>
           </Grid>
-          <FormControl className={landingClasses.formControl} margin="normal" required>
+          <FormControl
+            className={landingClasses.formControl}
+            margin="normal"
+            required
+          >
             <TextField
               label="password"
               aria-label="password"
@@ -110,16 +77,18 @@ const Login = (props) => {
               name="password"
               InputProps={{
                 endAdornment: (
-                  <Button className={classes.forgotLink}>Forgot?</Button>
+                  <Button className={landingClasses.secondaryLink}>
+                    Forgot?
+                  </Button>
                 ),
-                classes: { 
+                classes: {
                   input: landingClasses.protectedField,
-                  underline: landingClasses.underline 
+                  underline: landingClasses.underline,
                 },
               }}
             />
           </FormControl>
-          <Grid className={classes.buttonContainer}>
+          <Grid container className={landingClasses.buttonContainer}>
             <Button
               className={landingClasses.primaryButton}
               type="submit"

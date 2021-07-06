@@ -9,48 +9,15 @@ import {
   TextField,
   FormHelperText,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import { register } from "./store/utils/thunkCreators";
 import landingTheme from "./themes/landingTheme";
 import BannerContainer from "./components/Landing/Banner";
 
-const useStyles = makeStyles((theme) => ({
-  buttonContainer: {
-    display: "flex",
-    justifyContent: "space-around",
-  },
-  loginContainer: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    marginBottom: 40,
-    [theme.breakpoints.up('landscape')]: {
-      flexDirection: "row",
-      padding: "10px 40px 0 40px",
-      justifyContent: "flex-end",
-      marginBottom: 0,
-    }
-  },
-  form: {
-    margin: "auto 0",
-    [theme.breakpoints.up('landscape')]: {
-      width: "70%",
-      maxHeight: "100%",
-    }
-  },
-  forgotLink: {
-    ...theme.typography,
-    color: "#3A8DFF",
-    fontSize: 12,
-  },
-}));
-
 const Signup = (props) => {
   const history = useHistory();
+  const landingClasses = landingTheme();
   const { user, register } = props;
   const [formErrorMessage, setFormErrorMessage] = useState({});
-  const classes = useStyles();
-  const landingClasses = landingTheme();
 
   const handleRegister = async (event) => {
     event.preventDefault();
@@ -73,7 +40,7 @@ const Signup = (props) => {
 
   return (
     <BannerContainer>
-      <Grid className={classes.loginContainer} container item>
+      <Grid className={landingClasses.root} container item>
         <Typography className={landingClasses.secondaryHeader}>
           Need to log in?
         </Typography>
@@ -84,7 +51,7 @@ const Signup = (props) => {
           Login
         </Button>
       </Grid>
-      <form className={classes.form} onSubmit={handleRegister}>
+      <form className={landingClasses.form} onSubmit={handleRegister}>
         <Grid>
           <h1 className={landingClasses.primaryHeader}>Create an Account.</h1>
           <Grid>
@@ -169,7 +136,7 @@ const Signup = (props) => {
               </FormHelperText>
             </FormControl>
           </Grid>
-          <Grid className={classes.buttonContainer}>
+          <Grid container className={landingClasses.buttonContainer}>
             <Button
               className={landingClasses.primaryButton}
               type="submit"
