@@ -34,56 +34,54 @@ const server = http.createServer(app);
 
 const io = require("socket.io")(server);
 
-io.use((socket, next) => {
-    const cookies = cookie.parse(socket.handshake.headers.cookie);
-    const token = cookies.token;
-    if (token) {
-      jwt.verify(token, process.env.SESSION_SECRET, (err, decoded) => {
-        if (err) return next(new Error("Authentication Error"));
-        return next();
-      });
-    } else {
-      return next(new Error("Authentication Error"));
+io.on("connection", (socket) => {
+  const cookies = cookie.parse(socket.handshake.headers.cookie);
+  const token = cookies
+  if (token) {
+    jwt.verify(token, process.env.SESSION_SECRET, (err, decoded) => {
+      if (err) return next(new Error("Authentication Error"));
+      return next();
+    });
+  } else {
+    return next(new Error("Authentication Error"));
+  }
+  socket.on("go-online", (data) => {
+    const { id } = data;
+    if (id) {
+      clientIds[id] = socket.id;
     }
-  })
-  .on("connection", (socket) => {
-    socket.on("go-online", (data) => {
-      const { id } = data;
-      if (id) {
-        clientIds[id] = socket.id;
-      }
-      // send the user who just went online to everyone else who is already online
-      socket.broadcast.emit("add-online-user", id);
-    });
+    // send the user who just went online to everyone else who is already online
+    socket.broadcast.emit("add-online-user", id);
+  });
 
-    socket.on("new-message", (data) => {
-      const clientId = clientIds[data.recipientId];
-      if (clientId) {
-        io.to(clientId).emit("new-message", {
-          message: data.message,
-          sender: data.sender,
-          read: activeConversations[data.recipientId] === data.message.senderId,
-        });
-      }
-    });
-
-    socket.on("set-active", (data) => {
-      const { user, other } = data;
-      activeConversations[user] = other;
-      socket.broadcast.emit("update-active-read", {
-        sender: other,
-        recipient: user,
+  socket.on("new-message", (data) => {
+    const clientId = clientIds[data.recipientId];
+    if (clientId) {
+      io.to(clientId).emit("new-message", {
+        message: data.message,
+        sender: data.sender,
+        read: activeConversations[data.recipientId] === data.message.senderId,
       });
-    });
+    }
+  });
 
-    socket.on("logout", (id) => {
-      if (clientIds[id]) {
-        delete activeConversations[id];
-        delete clientIds[id];
-        socket.broadcast.emit("remove-offline-user", id);
-      }
+  socket.on("set-active", (data) => {
+    const { user, other } = data;
+    activeConversations[user] = other;
+    socket.broadcast.emit("update-active-read", {
+      sender: other,
+      recipient: user,
     });
   });
+
+  socket.on("logout", (id) => {
+    if (clientIds[id]) {
+      delete activeConversations[id];
+      delete clientIds[id];
+      socket.broadcast.emit("remove-offline-user", id);
+    }
+  });
+});
 
 sessionStore
   .sync()
