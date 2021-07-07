@@ -36,10 +36,8 @@ const io = require("socket.io")(server);
 
 io.use((socket, next) => {
   const token = socket.handshake.headers.cookie.slice(6);
-  console.log(token);
   if (token) {
     jwt.verify(token, process.env.SESSION_SECRET, (err, decoded) => {
-      console.log("DECODED:", decoded);
       if (err) return next(new Error("Authentication Error"));
       return next();
     });
@@ -48,10 +46,15 @@ io.use((socket, next) => {
   }
 })
 .on("connection", (socket) => {
+  console.log(`
+----
+Connection Established: ${socket.id}
+----
+  `);
   socket.on("go-online", (data) => {
-    const { id, clientId } = data;
-    if (id && clientId) {
-      clientIds[id] = clientId;
+    const { id } = data;
+    if (id) {
+      clientIds[id] = socket.id;
     }
     // send the user who just went online to everyone else who is already online
     socket.broadcast.emit("add-online-user", id);
