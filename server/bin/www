@@ -11,7 +11,6 @@ const { app, sessionStore } = require("../app");
 const http = require("http");
 const jwt = require("jsonwebtoken")
 const db = require("../db");
-const User = require("../db/models/user");
 const activeConversations = require("../activeConvo");
 const clientIds = require("../clientIDs");
 
@@ -46,11 +45,6 @@ io.use((socket, next) => {
   }
 })
 .on("connection", (socket) => {
-  console.log(`
-----
-Connection Established: ${socket.id}
-----
-  `);
   socket.on("go-online", (data) => {
     const { id } = data;
     if (id) {
