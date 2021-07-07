@@ -10,7 +10,6 @@ require("dotenv").config();
 const { app, sessionStore } = require("../app");
 const http = require("http");
 const db = require("../db");
-const onlineUsers = require("../onlineUsers");
 const activeConversations = require("../activeConvo");
 const clientIds = require("../clientIDs");
 
@@ -37,9 +36,6 @@ io.on("connection", (socket) => {
   
   socket.on("go-online", (data) => {
     const { id, clientId } = data;
-    if (!onlineUsers.includes(id)) {
-      onlineUsers.push(id);
-    }
     if (id && clientId) {
       clientIds[id] = clientId;
     }
@@ -68,9 +64,7 @@ io.on("connection", (socket) => {
   })
 
   socket.on("logout", (id) => {
-    if (onlineUsers.includes(id)) {
-      userIndex = onlineUsers.indexOf(id);
-      onlineUsers.splice(userIndex, 1);
+    if (clientIds[id]) {
       delete activeConversations[id];
       delete clientIds[id];
       socket.broadcast.emit("remove-offline-user", id);
