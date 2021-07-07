@@ -10,7 +10,7 @@ import {
 
 const socket = io(window.location.origin);
 
-socket.on("connect", async () => {
+socket.on("connect", () => {
   
   socket.on("add-online-user", (id) => {
     store.dispatch(addOnlineUser(id));
