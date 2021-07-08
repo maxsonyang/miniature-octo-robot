@@ -39,11 +39,8 @@ io.on("connection", (socket) => {
   const token = cookies
   if (token) {
     jwt.verify(token, process.env.SESSION_SECRET, (err, decoded) => {
-      if (err) return next(new Error("Authentication Error"));
-      return next();
+      if (err) return new Error("Authentication Error");
     });
-  } else {
-    return next(new Error("Authentication Error"));
   }
   socket.on("go-online", (data) => {
     const { id } = data;
